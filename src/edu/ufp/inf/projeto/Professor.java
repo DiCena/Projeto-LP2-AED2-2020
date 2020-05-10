@@ -10,24 +10,27 @@ public class Professor extends Pessoa {
 
   private Date horario_atendimento;
 
+  private String code;
+
   private int gabinete;
 
-  private RedBlackBST<Date,Turma> horario;
+  private RedBlackBST<Date,Aula> horario;
 
   private LinearProbingHashST<String, Turma> turmas;
 
-  public Professor(String nome, String email, Date data_nascimento, String morada, Date horario_atendimento, int gabinete) {
+  public Professor(String nome, String email, Date data_nascimento, String morada, Date horario_atendimento, String code, int gabinete) {
     super(nome, email, data_nascimento, morada);
     this.horario_atendimento=horario_atendimento;
+    this.code = code;
     this.gabinete=gabinete;
   }
 
   public void adicionarTurma(Turma t) {
-    if (findTurma(t.codigo)!=null) {
+    if (findTurma(t.getCodigo())!=null) {
       System.out.println("Aluno ja inscrito na turma!!");
     }
     else{
-      getTurmas().put(t.codigo,t);
+      getTurmas().put(t.getCodigo(),t);
     }
   }
 
@@ -48,8 +51,8 @@ public class Professor extends Pessoa {
     return getTurmas().get(nome);
   }
 
-  public ArrayList<Turma> findAulasDia(int d, Date lo, Date hi){
-    ArrayList<Turma> aux = new ArrayList();
+  public ArrayList<Aula> findAulasDia(int d, Date lo, Date hi){
+    ArrayList<Aula> aux = new ArrayList();
     for (Date di:horario.keys(lo, hi)) {
       if (di.getDias_semana()==d){
         aux.add(horario.get(di));
@@ -58,21 +61,21 @@ public class Professor extends Pessoa {
     return aux;
   }
 
-  /**public Turma nextAula(){
-    Turma aux;
+  public Aula nextAula(){
+    Aula aux;
     java.util.Date agora =  new java.util.Date();
     Calendar calendar = Calendar.getInstance();
     calendar.setTime(agora);
     Date date = new Date(calendar.get(Calendar.DAY_OF_WEEK), agora.getHours(), agora.getMinutes());
-    ArrayList<Turma> aulas = findAulasDia(calendar.get(Calendar.DAY_OF_WEEK), date, new Date(calendar.get(Calendar.DAY_OF_WEEK), 23, 59));
+    ArrayList<Aula> aulas = findAulasDia(calendar.get(Calendar.DAY_OF_WEEK), date, new Date(calendar.get(Calendar.DAY_OF_WEEK), 23, 59));
     aux = aulas.get(0);
-    for (Turma turma:turmas) {
-      if(turma.getHora_inicio().isBefore(aux.getHora_inicio())){
-        aux = turma;
+    for (Aula aula:aulas) {
+      if(aula.getHora_inicio().isBefore(aux.getHora_inicio())){
+        aux = aula;
       }
     }
     return aux;
-  }**/
+  }
 
 
   public void editarAtendimento(Date h) {
@@ -99,11 +102,11 @@ public class Professor extends Pessoa {
     this.gabinete = gabinete;
   }
 
-  public RedBlackBST<Date, Turma> getHorario() {
+  public RedBlackBST<Date, Aula> getHorario() {
     return horario;
   }
 
-  public void setHorario(RedBlackBST<Date, Turma> horario) {
+  public void setHorario(RedBlackBST<Date, Aula> horario) {
     this.horario = horario;
   }
 
@@ -123,5 +126,13 @@ public class Professor extends Pessoa {
             ", \nhorario=" + horario +
             ", \nturmas=" + turmas +
             '}';
+  }
+
+  public String getCode() {
+    return code;
+  }
+
+  public void setCode(String code) {
+    this.code = code;
   }
 }

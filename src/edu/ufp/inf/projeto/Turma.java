@@ -1,46 +1,55 @@
 package edu.ufp.inf.projeto;
 
-import java.util.ArrayList;
-import java.util.Vector;
-
+import edu.princeton.cs.algs4.LinearProbingHashST;
 
 public class Turma {
 
-  String codigo;
-  private Date hora_inicio;
-  private Date hora_fim;
+  private String codigo;
+  private Professor professor;
+  private LinearProbingHashST<Integer,Aluno> alunos;
+  private String uc;
+  private Aula aula;
 
-    private Professor professor;
-    private Sala sala;
 
-  private ArrayList<Aluno> alunos;
-
-    public Turma(String codigo, Date hora_inicio, Date hora_fim, Professor professor, Sala sala) {
+  public Turma(String codigo, Professor professor, String uc, Aula aula) {
         this.codigo = codigo;
-        this.hora_inicio = hora_inicio;
-        this.hora_fim = hora_fim;
         this.professor = professor;
-        this.sala = sala;
+        this.uc = uc;
+        this.aula = aula;
+  }
+
+  public void adicionarAluno(Aluno a) {
+    if (findAluno(a.getNumero())==null){
+      alunos.put(a.getNumero(),a);
     }
-
-    public void modifyTime(Date i, Date f){
-    this.hora_inicio = i;
-    this.hora_fim = f;
   }
 
-  public void adicionarAluno(String c) {
+  public Aluno removerAluno(String n) {
+    Aluno a = findAluno(n);
+    if(a!=null){
+      alunos.delete(a.getNumero());
+    }
+    return a;
   }
 
-  public void removerAluno(String c) {
+  public Aluno findAluno(int n){
+    return alunos.get(n);
   }
 
-  public boolean isInterseptedBy(Turma turma){
-    return turma.getHora_inicio().isBetween(this.hora_inicio, this.hora_fim) || turma.getHora_fim().isBetween(this.hora_inicio, this.hora_fim);
+  public Aluno findAluno(String n){
+    for (Integer i:alunos.keys()) {
+      if(alunos.get(i).getNome()==n){
+        return alunos.get(i);
+      }
+    }
+    return null;
   }
 
-  public void modifySala(Sala s){
-    this.sala = s;
-  }
+  /**
+   *
+   * Get & Set
+   *
+   * */
 
   public String getCodigo() {
     return codigo;
@@ -58,49 +67,39 @@ public class Turma {
     this.professor = professor;
   }
 
-  public ArrayList<Aluno> getAlunos() {
+  public LinearProbingHashST<Integer,Aluno> getAlunos() {
     return alunos;
   }
 
-  public void setAlunos(ArrayList<Aluno> alunos) {
+  public void setAlunos(LinearProbingHashST<Integer,Aluno> alunos) {
     this.alunos = alunos;
   }
 
-  public Date getHora_inicio() {
-    return hora_inicio;
-  }
-
-  public void setHora_inicio(Date hora_inicio) {
-    this.hora_inicio = hora_inicio;
-  }
-
-  public Date getHora_fim() {
-    return hora_fim;
-  }
-
-  public void setHora_fim(Date hora_fim) {
-    this.hora_fim = hora_fim;
-  }
-
-  public Sala getSala() {
-    return sala;
-  }
-
-  public void setSala(Sala sala) {
-    this.sala = sala;
-  }
 
     @Override
     public String toString() {
         return "\nTurma{" +
                 "\ncodigo='" + codigo + '\'' +
-                ", \nhora_inicio=" + hora_inicio +
-                ", \nhora_fim=" + hora_fim +
                 ", \nprofessor=" + professor +
-                ", \nsala=" + sala +
                 ", \nalunos=" + alunos +
                 '}';
     }
+
+  public String getUc() {
+    return uc;
+  }
+
+  public void setUc(String uc) {
+    this.uc = uc;
+  }
+
+  public Aula getAula() {
+    return aula;
+  }
+
+  public void setAula(Aula aula) {
+    this.aula = aula;
+  }
 }
 
 
